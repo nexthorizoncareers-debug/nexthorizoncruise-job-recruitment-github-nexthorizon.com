@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next Horizon Careers — Your Gateway to the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #071020;
+    --ocean: #0d2545;
+    --teal: #0e6e82;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --pearl: #f5f0e8;
+    --mist: #a8b8c8;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--deep);
+    color: var(--pearl);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── WAVE SVG BACKGROUND ─── */
+  .wave-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .wave-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(13,69,130,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(14,110,130,0.15) 0%, transparent 50%),
+      linear-gradient(160deg, #071020 0%, #0a1628 50%, #071828 100%);
+  }
+  .wave-bg svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0.06;
+  }
+
+  /* ─── NOISE TEXTURE ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+  }
+
+  /* ─── CONTENT ─── */
+  .content { position: relative; z-index: 2; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 5%;
+    backdrop-filter: blur(20px);
+    background: rgba(7,16,32,0.7);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    transition: all 0.4s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo span {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mist);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--deep);
+    background: var(--gold);
+    padding: 0.6rem 1.4rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 5%;
+    padding-top: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--pearl);
+    max-width: 900px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+  .hero-sub {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--mist);
+    max-width: 520px;
+    line-height: 1.7;
+    margin: 2rem 0 3rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    animation: fadeUp 0.8s ease 0.3s both;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--deep);
+    background: var(--gold);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 40px rgba(201,168,76,0.3); }
+  .btn-secondary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: transparent;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  .hero-ship {
+    position: absolute;
+    right: -5%;
+    bottom: 5%;
+    width: 55%;
+    max-width: 750px;
+    opacity: 0.08;
+    animation: float 8s ease-in-out infinite, fadeIn 1.5s ease 0.4s both;
+    pointer-events: none;
+  }
+  .hero-horizon {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), rgba(14,110,130,0.5), rgba(201,168,76,0.3), transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    animation: fadeIn 1s ease 1s both;
+  }
+  .scroll-indicator span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ─── STATS ─── */
+  .stats {
+    padding: 5rem 5%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+    background: rgba(201,168,76,0.1);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .stat {
+    padding: 2.5rem 2rem;
+    background: var(--deep);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 8rem 5%; }
+
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-tag::after {
+    content: '';
+    display: block;
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--teal);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--pearl);
+    line-height: 1.1;
+    max-width: 650px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ─── SERVICES ─── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    margin-top: 4rem;
+    background: rgba(201,168,76,0.1);
+  }
+  .service-card {
+    background: var(--deep);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    border-top: 2px solid transparent;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13,69,130,0.05) 0%, transparent 60%);
+    transition: opacity 0.4s;
+  }
+  .service-card:hover {
+    background: var(--ocean);
+    border-top-color: var(--gold);
+    transform: translateY(-3px);
+  }
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--pearl);
+    margin-bottom: 1rem;
+  }
+  .service-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--mist);
+    font-weight: 300;
+  }
+  .service-tag {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    border: 1px solid rgba(14,110,130,0.3);
+    padding: 0.25rem 0.75rem;
+  }
+
+  /* ─── REGIONS ─── */
+  .regions {
+    background: var(--navy);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .regions-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .regions-map {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: rgba(13,37,69,0.5);
+    border: 1px solid rgba(201,168,76,0.15);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .regions-map svg { width: 100%; height: 100%; opacity: 0.4; }
+  .region-dots {
+    position: absolute;
+    inset: 0;
+  }
+  .dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    transform: translate(-50%, -50%);
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.4;
+    animation: dotRing 2s ease-in-out infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.5s; }
+  .dot:nth-child(3) { animation-delay: 1s; }
+  .dot:nth-child(4) { animation-delay: 1.5s; background: var(--teal); }
+  .dot:nth-child(4)::after { border-color: var(--teal); }
+
+  .region-list { list-style: none; margin-top: 2.5rem; }
+  .region-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    font-size: 1.1rem;
+    color: var(--mist);
+    transition: color 0.3s;
+  }
+  .region-list li:hover { color: var(--pearl); }
+  .region-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ─── PRICING ─── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5px;
+    margin-top: 4rem;
+    background: rgba(201,168,76,0.1);
+  }
+  .price-card {
+    background: var(--deep);
+    padding: 3rem 2.5rem;
+    position: relative;
+    transition: all 0.4s;
+  }
+  .price-card.featured {
+    background: var(--ocean);
+    border-top: 2px solid var(--gold);
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .price-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--pearl);
+    margin-bottom: 0.5rem;
+  }
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .price-amount sup {
+    font-size: 1.5rem;
+    vertical-align: super;
+  }
+  .price-currency {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--mist);
+  }
+  .price-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--mist);
+    font-weight: 300;
+    margin: 1.5rem 0 2rem;
+  }
+  .price-card .btn-primary, .price-card .btn-secondary {
+    width: 100%;
+    text-align: center;
+    display: block;
+    font-size: 0.62rem;
+  }
+  .featured-label {
+    position: absolute;
+    top: -1px;
+    right: 2rem;
+    background: var(--gold);
+    color: var(--deep);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), var(--teal), var(--gold));
+    opacity: 0.2;
+  }
+  .step {
+    position: relative;
+    padding-top: 4rem;
+  }
+  .step-num {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: var(--deep);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+  .step h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--pearl);
+    margin-bottom: 0.8rem;
+  }
+  .step p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--mist);
+    font-weight: 300;
+  }
+
+  /* ─── APPLICATION FORM ─── */
+  #apply {
+    background: var(--navy);
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+  label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+  input, select, textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    color: var(--pearl);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(168,184,200,0.4); }
+  input:focus, select:focus, textarea:focus {
+    border-color: rgba(201,168,76,0.5);
+    background: rgba(201,168,76,0.03);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.1);
+  }
+  select option { background: var(--navy); }
+  textarea { resize: vertical; min-height: 120px; }
+  .form-submit { margin-top: 2rem; }
+
+  /* ─── CONTACT ─── */
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .contact-info { margin-top: 3rem; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .contact-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  }
+  .contact-detail p:first-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.4rem;
+  }
+  .contact-detail a, .contact-detail p:last-child {
+    font-size: 1.1rem;
+    color: var(--pearl);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .contact-detail a:hover { color: var(--gold); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .footer-brand p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--mist);
+    font-weight: 300;
+    margin-top: 1rem;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li {
+    margin-bottom: 0.8rem;
+  }
+  .footer-col ul a {
+    font-size: 0.95rem;
+    color: var(--mist);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-col ul a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+  }
+  .footer-bottom p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: rgba(168,184,200,0.4);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(0.5deg); }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes pulse {
+    0%, 100% { width: 40px; opacity: 1; }
+    50% { width: 60px; opacity: 0.5; }
+  }
+  @keyframes dotPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+  }
+  @keyframes dotRing {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(2); opacity: 0; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 3rem; }
+    .hero-ship { opacity: 0.04; }
+    .regions-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wave-bg">
+  <svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+    <path fill="rgba(14,110,130,0.5)" d="M0,224L60,213.3C120,203,240,181,360,181.3C480,181,600,203,720,208C840,213,960,203,1080,181.3C1200,160,1320,128,1380,112L1440,96L1440,320L0,320Z"/>
+    <path fill="rgba(13,37,69,0.8)" d="M0,256L80,250.7C160,245,320,235,480,224C640,213,800,203,960,213.3C1120,224,1280,256,1360,272L1440,288L1440,320L0,320Z"/>
+  </svg>
+</div>
+
+<div class="content">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span>⚓</span> Next Horizon Careers
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#regions">Regions</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#how-it-works">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#apply" class="nav-cta">Apply Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Your Gateway to Global Careers at Sea</div>
+  <h1>Set Sail for <em>Opportunity</em></h1>
+  <p class="hero-sub">Connecting ambitious professionals with world-class cruise lines, maritime logistics, and international service careers across the UK, USA, and beyond.</p>
+  <div class="hero-actions">
+    <a href="#apply" class="btn-primary">Begin Your Application</a>
+    <a href="#services" class="btn-secondary">Explore Opportunities</a>
+  </div>
+
+  <!-- Decorative cruise ship SVG -->
+  <svg class="hero-ship" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" fill="var(--pearl)">
+    <rect x="100" y="200" width="600" height="80" rx="10"/>
+    <rect x="200" y="140" width="400" height="70" rx="8"/>
+    <rect x="300" y="90" width="200" height="60" rx="6"/>
+    <rect x="350" y="50" width="100" height="50" rx="4"/>
+    <rect x="390" y="10" width="20" height="50"/>
+    <!-- portholes -->
+    <circle cx="200" cy="240" r="12"/><circle cx="250" cy="240" r="12"/>
+    <circle cx="300" cy="240" r="12"/><circle cx="350" cy="240" r="12"/>
+    <circle cx="400" cy="240" r="12"/><circle cx="450" cy="240" r="12"/>
+    <circle cx="500" cy="240" r="12"/><circle cx="550" cy="240" r="12"/>
+    <circle cx="600" cy="240" r="12"/>
+    <path d="M50 280 Q400 260 750 280 L770 310 L30 310 Z"/>
+  </svg>
+
+  <div class="hero-horizon"></div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">50+</div>
+    <div class="stat-label">Cruise Lines Partnered</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">30+</div>
+    <div class="stat-label">Countries Covered</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">5K+</div>
+    <div class="stat-label">Placements Made</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">98%</div>
+    <div class="stat-label">Client Satisfaction</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag">What We Offer</div>
+  <h2 class="section-title">Opportunities Spanning <em>Every Ocean</em></h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🚢</span>
+      <h3>Cruise Ship Careers</h3>
+      <p>From hospitality and entertainment to engineering and navigation — we place qualified candidates with the world's leading cruise lines on international waters.</p>
+      <span class="service-tag">Flagship Service</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌍</span>
+      <h3>Logistics & Supply Chain</h3>
+      <p>Port operations, freight management, and maritime logistics roles across international hubs in the UK, USA, Caribbean, Australia, and more.</p>
+      <span class="service-tag">International</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏥</span>
+      <h3>Medical Clearance Support</h3>
+      <p>Comprehensive medical fitness assessments and documentation required for maritime employment — fast-tracked with our trusted network of maritime doctors.</p>
+      <span class="service-tag">Essential Service</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📄</span>
+      <h3>CV & Cover Letter Writing</h3>
+      <p>Industry-tailored CV and cover letter preparation by our maritime recruitment specialists. Stand out with professionally crafted application documents.</p>
+      <span class="service-tag">Career Support</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">✏️</span>
+      <h3>CV Revamp</h3>
+      <p>Have an existing CV? Our experts will restructure, refine, and modernise it to meet international maritime hiring standards and ATS requirements.</p>
+      <span class="service-tag">Upgrade</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🧭</span>
+      <h3>Career Guidance</h3>
+      <p>Personalised consultation to map your career path, identify suitable roles, and prepare you for interviews with international maritime employers.</p>
+      <span class="service-tag">Consulting</span>
+    </div>
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section id="regions" class="regions">
+  <div class="regions-inner">
+    <div>
+      <div class="section-tag">Where We Operate</div>
+      <h2 class="section-title">Global Reach, <em>Local Expertise</em></h2>
+      <p style="font-size:1.1rem; line-height:1.8; color:var(--mist); margin-top:1.5rem; font-weight:300;">
+        We operate across multiple continents, placing candidates with employers in prime maritime and hospitality markets around the world.
+      </p>
+      <ul class="region-list">
+        <li>United Kingdom — Maritime & Logistics Hub</li>
+        <li>United States of America — Cruise Homeports</li>
+        <li>Caribbean — Island Resort & Cruise Operations</li>
+        <li>Australia & New Zealand — Asia-Pacific Routes</li>
+        <li>Continental Europe — Major Port Cities</li>
+        <li>Middle East & Asia — Luxury Fleet Operators</li>
+        <li>Africa — Emerging Market Opportunities</li>
+      </ul>
+    </div>
+    <div>
+      <div class="regions-map">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <!-- simplified world outline shapes -->
+          <!-- Americas -->
+          <path d="M120,80 L180,70 L200,100 L220,120 L200,180 L180,220 L160,280 L140,320 L120,360 L100,340 L80,300 L90,250 L80,200 L90,150 L100,110 Z" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+          <!-- Europe/Africa -->
+          <path d="M350,60 L400,55 L420,80 L430,120 L410,160 L400,200 L390,250 L370,310 L350,360 L330,330 L320,290 L330,240 L320,200 L330,150 L340,100 Z" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+          <!-- Asia -->
+          <path d="M450,50 L560,45 L620,70 L650,100 L630,150 L580,180 L540,200 L500,230 L470,200 L450,160 L440,120 L450,80 Z" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+          <!-- Australia -->
+          <path d="M580,280 L640,270 L670,300 L660,340 L620,360 L580,340 L565,310 Z" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+        </svg>
+        <div class="region-dots">
+          <!-- UK -->
+          <div class="dot" style="left:47%;top:22%;"></div>
+          <!-- USA East -->
+          <div class="dot" style="left:22%;top:35%;"></div>
+          <!-- Caribbean -->
+          <div class="dot" style="left:25%;top:48%;"></div>
+          <!-- Australia -->
+          <div class="dot" style="left:78%;top:68%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-tag">Transparent Pricing</div>
+  <h2 class="section-title">Clear Fees, <em>No Surprises</em></h2>
+  <p style="font-size:1.1rem; line-height:1.8; color:var(--mist); margin-top:1.5rem; font-weight:300; max-width:600px;">
+    Every fee is fixed, transparent, and tailored to the specific service. We believe in fair, accessible pricing for every aspiring maritime professional.
+  </p>
+  <div class="pricing-grid">
+    <div class="price-card featured">
+      <div class="featured-label">Core Service</div>
+      <div class="price-badge">⚓ Registration</div>
+      <div class="price-name">Application Registration</div>
+      <div class="price-amount"><sup>$</sup>200</div>
+      <div class="price-currency">USD — Fixed Fee</div>
+      <p class="price-desc">Your gateway to all cruise ship and maritime logistics applications. Covers profile creation, job matching, and application submission to our partner employers worldwide.</p>
+      <a href="#apply" class="btn-primary">Get Started</a>
+    </div>
+    <div class="price-card">
+      <div class="price-badge">🏥 Health</div>
+      <div class="price-name">Medical Assessment</div>
+      <div class="price-amount"><sup>$</sup>250</div>
+      <div class="price-currency">USD — One-time</div>
+      <p class="price-desc">Full maritime medical fitness evaluation required by international cruise lines. Includes documentation and ENG1 / STCW equivalent clearance support.</p>
+      <a href="#apply" class="btn-secondary">Book Medical</a>
+    </div>
+    <div class="price-card">
+      <div class="price-badge">📋 Documents</div>
+      <div class="price-name">CV & Cover Letter</div>
+      <div class="price-amount"><sup>$</sup>30</div>
+      <div class="price-currency">USD — Per Package</div>
+      <p class="price-desc">Professionally written international-standard CV and tailored cover letter, crafted specifically for the maritime and hospitality recruitment sector.</p>
+      <a href="#apply" class="btn-secondary">Order Now</a>
+    </div>
+    <div class="price-card">
+      <div class="price-badge">✏️ Upgrade</div>
+      <div class="price-name">CV Revamp</div>
+      <div class="price-amount"><sup>$</sup>16</div>
+      <div class="price-currency">USD — Per CV</div>
+      <p class="price-desc">Expert restructuring and modernisation of your existing CV to meet current maritime industry standards and improve shortlisting rates.</p>
+      <a href="#apply" class="btn-secondary">Revamp CV</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" style="background: var(--navy); border-top: 1px solid rgba(201,168,76,0.1);">
+  <div class="section-tag">Your Journey</div>
+  <h2 class="section-title">From Application to <em>Setting Sail</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Register & Pay Fee</h3>
+      <p>Complete your registration and pay the $200 application fee. This activates your profile in our system and begins the matching process.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Document Preparation</h3>
+      <p>Submit your CV for revamp or order a new one. Our experts tailor your documents to the specific roles and cruise lines you're targeting.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Medical Clearance</h3>
+      <p>Undergo the required maritime medical assessment. We guide you through every requirement and help arrange your appointment swiftly.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Interview & Placement</h3>
+      <p>We submit your application to our partner employers, coordinate interviews, and support you through to your successful placement.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <h3>Embark & Thrive</h3>
+      <p>Board your vessel, begin your international career, and join a community of professionals working on the world's most iconic ships.</p>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section id="apply">
+  <div class="section-tag">Begin Today</div>
+  <h2 class="section-title">Start Your <em>Application</em></h2>
+  <p style="font-size:1.1rem; line-height:1.8; color:var(--mist); margin-top:1.5rem; font-weight:300; max-width:600px;">
+    Fill in the form below and a member of our recruitment team will contact you within 24–48 hours to guide you through the next steps.
+  </p>
+  <form class="form-grid" onsubmit="handleSubmit(event)">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" placeholder="Your first name" required>
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" placeholder="Your last name" required>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="your@email.com" required>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+1 (000) 000-0000">
+    </div>
+    <div class="form-group">
+      <label>Country of Residence</label>
+      <select>
+        <option value="">Select your country…</option>
+        <option>United Kingdom</option>
+        <option>United States of America</option>
+        <option>Australia</option>
+        <option>Canada</option>
+        <option>Caribbean Islands</option>
+        <option>South Africa</option>
+        <option>Nigeria</option>
+        <option>Philippines</option>
+        <option>India</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Service Interested In</label>
+      <select>
+        <option value="">Select a service…</option>
+        <option>Cruise Ship Career — Registration ($200)</option>
+        <option>Maritime Logistics Role — Registration ($200)</option>
+        <option>Medical Assessment ($250)</option>
+        <option>International CV & Cover Letter ($30)</option>
+        <option>CV Revamp ($16)</option>
+        <option>Multiple Services</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Department / Role Sought</label>
+      <select>
+        <option value="">Select a department…</option>
+        <option>Hospitality & Food Service</option>
+        <option>Entertainment & Activities</option>
+        <option>Deck & Navigation</option>
+        <option>Engineering & Technical</option>
+        <option>Medical & Wellness</option>
+        <option>Retail & Sales</option>
+        <option>Finance & Administration</option>
+        <option>Logistics & Port Operations</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Years of Relevant Experience</label>
+      <select>
+        <option>No experience (Entry Level)</option>
+        <option>Less than 1 year</option>
+        <option>1–3 years</option>
+        <option>3–5 years</option>
+        <option>5+ years</option>
+      </select>
+    </div>
+    <div class="form-group full">
+      <label>Tell Us About Yourself</label>
+      <textarea placeholder="Briefly describe your background, skills, and what you're looking for in your next role…"></textarea>
+    </div>
+    <div class="form-group full form-submit">
+      <button type="submit" class="btn-primary" style="border:none; font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:0.15em; padding:1.1rem 3rem; cursor:pointer;">Submit Application →</button>
+    </div>
+  </form>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--navy); border-top:1px solid rgba(201,168,76,0.1);">
+  <div class="contact-inner">
+    <div>
+      <div class="section-tag">Get In Touch</div>
+      <h2 class="section-title">We're Ready to <em>Help You</em></h2>
+      <p style="font-size:1.1rem; line-height:1.8; color:var(--mist); margin-top:1.5rem; font-weight:300;">
+        Have questions about the application process, pricing, or available roles? Our team is available to guide you every step of the way toward your maritime career.
+      </p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-detail">
+            <p>Phone / WhatsApp</p>
+            <a href="tel:+18168270407">+1 (816) 827-0407</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail">
+            <p>Email Address</p>
+            <a href="mailto:nexthorizoncareers@gmail.com">nexthorizoncareers@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-detail">
+            <p>Operating Regions</p>
+            <p>UK · USA · Worldwide</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-detail">
+            <p>Response Time</p>
+            <p>Within 24–48 Hours</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2rem;margin-top:5.5rem;">
+      <div style="background:var(--deep);border:1px solid rgba(201,168,76,0.15);padding:2.5rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));"></div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--pearl);margin-bottom:1rem;">Quick Enquiry</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="form-group"><label>Name</label><input type="text" placeholder="Your full name"></div>
+          <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Your question or message…" style="min-height:90px;"></textarea></div>
+          <button onclick="handleEnquiry(event)" style="background:var(--gold);color:var(--deep);border:none;padding:0.9rem 2rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));" onmouseover="this.style.background='#e8c97a'" onmouseout="this.style.background='var(--gold)'">Send Message →</button>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--ocean),var(--navy));border:1px solid rgba(201,168,76,0.2);padding:2rem;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:0.8rem;">⚓</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--pearl);margin-bottom:0.5rem;">Ready to Apply?</h3>
+        <p style="font-size:0.9rem;color:var(--mist);margin-bottom:1.5rem;font-weight:300;">Registration is open now. Your maritime career begins with one step.</p>
+        <a href="#apply" class="btn-primary" style="font-size:0.62rem;display:inline-block;">Apply Now — $200</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:0.5rem;">
+        ⚓ Next Horizon Careers
+      </div>
+      <p>Connecting talented professionals with world-class maritime and logistics employers across the UK, USA, and the entire globe.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Cruise Ship Jobs</a></li>
+        <li><a href="#services">Logistics Roles</a></li>
+        <li><a href="#pricing">Medical Clearance</a></li>
+        <li><a href="#pricing">CV Writing</a></li>
+        <li><a href="#pricing">CV Revamp</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Regions</h4>
+      <ul>
+        <li><a href="#regions">United Kingdom</a></li>
+        <li><a href="#regions">United States</a></li>
+        <li><a href="#regions">Caribbean</a></li>
+        <li><a href="#regions">Australia</a></li>
+        <li><a href="#regions">Worldwide</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+18168270407">+1 (816) 827-0407</a></li>
+        <li><a href="mailto:nexthorizoncareers@gmail.com">Email Us</a></li>
+        <li><a href="#apply">Apply Now</a></li>
+        <li><a href="#how-it-works">Our Process</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Next Horizon Careers. All rights reserved.</p>
+    <p>Placements in UK · USA · Worldwide — Powered by Passion for Maritime Excellence</p>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.padding = '0.9rem 5%';
+      nav.style.background = 'rgba(7,16,32,0.95)';
+    } else {
+      nav.style.padding = '1.4rem 5%';
+      nav.style.background = 'rgba(7,16,32,0.7)';
+    }
+  });
+
+  // Intersection observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .price-card, .step, .stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.4s, border-color 0.4s';
+    observer.observe(el);
+  });
+
+  // Form submissions
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = '✓ Application Received!';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = 'var(--pearl)';
+    setTimeout(() => {
+      btn.textContent = 'Submit Application →';
+      btn.style.background = 'var(--gold)';
+      btn.style.color = 'var(--deep)';
+      e.target.reset();
+    }, 4000);
+  }
+
+  function handleEnquiry(e) {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = 'var(--pearl)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = 'var(--gold)';
+      btn.style.color = 'var(--deep)';
+    }, 3500);
+  }
+</script>
+</body>
+</html>
