@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Horizon Careers - Secure Payment</title>
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #003d5c;
+            --accent-color: #00d4ff;
+            --dark-bg: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #004d73 100%);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #004d73 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Main Layout */
+        .payment-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .payment-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Services Card */
+        .services-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .services-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(0, 212, 255, 0.05);
+        }
+
+        .service-item.selected {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .service-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .service-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .service-price {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Checkout Card */
+        .checkout-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .checkout-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        /* Stripe Element */
+        #card-element {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: var(--white);
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background-color: #f0f0f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-summary h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .summary-total {
+            border-top: 2px solid #ddd;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #003d5c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 61, 92, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #00b8d4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 3px solid var(--accent-color);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            border: 4px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent-color);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner.active {
+            display: inline-block;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .badge strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 21h20M17 9V5H7v4M3 10h18v8c0 1-1 2-2 2H5c-1 0-2-1-2-2v-8z"/>
+            </svg>
+            Next Horizon Careers
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Secure Payment & Registration</h1>
+        <p>Complete your profile and join thousands of maritime professionals worldwide</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Alert Messages -->
+        <div id="alert" class="alert"></div>
+
+        <!-- Payment Layout -->
+        <div class="payment-layout">
+            <!-- Services Selection -->
+            <div class="services-card">
+                <h2>💼 Select Services</h2>
+                <div id="services-list"></div>
+            </div>
+
+            <!-- Checkout Form -->
+            <div class="checkout-card">
+                <h2>💳 Secure Checkout</h2>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="summary-items"></div>
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span id="total-amount">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="checkout-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-element">Card Details *</label>
+                        <div id="card-element"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent" id="submit-btn">
+                        <span class="spinner" id="spinner"></span>
+                        <span id="btn-text">Pay & Register</span>
+                    </button>
+                </form>
+
+                <!-- Trust Badges -->
+                <div class="trust-badges">
+                    <div class="badge">
+                        <strong>🔒</strong> Secure with Stripe
+                    </div>
+                    <div class="badge">
+                        <strong>✓</strong> PCI Level 1 Certified
+                    </div>
+                    <div class="badge">
+                        <strong>🌍</strong> Global Support
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div style="background: var(--white); padding: 2rem; border-radius: 10px; box-shadow: var(--shadow); text-align: center; margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Need Help?</h3>
+            <p style="margin-bottom: 0.5rem;">
+                📧 <strong>Email:</strong> nexthorizoncareers@gmail.com
+            </p>
+            <p>
+                📞 <strong>Phone:</strong> +1 (816) 827-0407
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Next Horizon Careers. All rights reserved.</p>
+        <p style="font-size: 0.9rem; color: #aaa;">Secure payment processing | International support | Professional career guidance</p>
+    </footer>
+
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_demo_key'); // Replace with actual key
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        // Services Data
+        const services = [
+            { id: 'registration', name: 'Job Application Registration', price: 200, description: 'Complete profile setup and job matching' },
+            { id: 'medical', name: 'Medical Certification', price: 50, description: 'Maritime medical examination support' },
+            { id: 'cv', name: 'International CV & Cover Letter', price: 30, description: 'Professional document preparation' },
+            { id: 'revamp', name: 'CV Revamp', price: 16, description: 'Resume enhancement service' }
+        ];
+
+        let selectedServices = [];
+
+        // Render Services
+        function renderServices() {
+            const servicesList = document.getElementById('services-list');
+            servicesList.innerHTML = services.map(service => `
+                <div class="service-item" onclick="toggleService('${service.id}')">
+                    <div class="service-info">
+                        <h3>${service.name}</h3>
+                        <p>${service.description}</p>
+                    </div>
+                    <div class="service-price">$${service.price}</div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle Service Selection
+        function toggleService(serviceId) {
+            const index = selectedServices.findIndex(s => s.id === serviceId);
+            const service = services.find(s => s.id === serviceId);
+            
+            if (index > -1) {
+                selectedServices.splice(index, 1);
+            } else {
+                selectedServices.push(service);
+            }
+
+            updateUI();
+        }
+
+        // Update UI
+        function updateUI() {
+            // Update service items styling
+            document.querySelectorAll('.service-item').forEach(item => {
+                const serviceId = item.onclick.toString().match(/'([^']+)'/)[1];
+                if (selectedServices.find(s => s.id === serviceId)) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+
+            // Update summary
+            const summaryItems = document.getElementById('summary-items');
+            summaryItems.innerHTML = selectedServices.map(service => `
+                <div class="summary-item">
+                    <span>${service.name}</span>
+                    <span>$${service.price}</span>
+                </div>
+            `).join('');
+
+            // Update total
+            const total = selectedServices.reduce((sum, service) => sum + service.price, 0);
+            document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Show Alert
+        function showAlert(message, type = 'info') {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert show ${type}`;
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        }
+
+        // Form Submission
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (selectedServices.length === 0) {
+                showAlert('Please select at least one service', 'error');
+                return;
+            }
+
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            const submitBtn = document.getElementById('submit-btn');
+            const spinner = document.getElementById('spinner');
+            const btnText = document.getElementById('btn-text');
+
+            submitBtn.disabled = true;
+            spinner.classList.add('active');
+            btnText.textContent = 'Processing...';
+
+            try {
+                // Create payment method
+                const { error, paymentMethod } = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: { name: fullName, email: email }
+                });
+
+                if (error) {
+                    showAlert(error.message, 'error');
+                    throw error;
+                }
+
+                // In production, send to your backend
+                const total = selectedServices.reduce((sum, service) => sum + service.price, 0);
+                
+                // Simulated payment processing
+                console.log({
+                    fullName,
+                    email,
+                    phone,
+                    services: selectedServices,
+                    amount: total,
+                    paymentMethod: paymentMethod.id
+                });
+
+                showAlert(`✅ Payment of $${total.toFixed(2)} successful! Check your email for confirmation.`, 'success');
+                
+                // Reset form
+                setTimeout(() => {
+                    document.getElementById('checkout-form').reset();
+                    selectedServices = [];
+                    renderServices();
+                    updateUI();
+                }, 2000);
+
+            } catch (error) {
+                showAlert('Payment failed. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                spinner.classList.remove('active');
+                btnText.textContent = 'Pay & Register';
+            }
+        });
+
+        // Initialize on load
+        renderServices();
+        updateUI();
+    </script>
+</body>
+</html>
